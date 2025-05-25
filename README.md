@@ -2,6 +2,7 @@
 ***Integrantes do Gurpo:***
 
 @mendesfigueiredo
+
 @luksverdaomg
 
 Nesse projeto foi proposto que fizemos uma implementação em código de dois algoritimos, sendo eles: 
