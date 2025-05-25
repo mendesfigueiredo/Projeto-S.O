@@ -1,37 +1,44 @@
 #include <stdio.h>
 #include <string.h>
 #define MAX 15
+#include <limits.h>
 
 struct Processos {
 	char nome[100];
-	int tempoEntrada, tempoProcesso, id;
+	int tempoEntrada, tempoProcesso, tempoRestante, id;
 };
 
 
-int SRT(struct Processos processo[], int *n){
-    int i = 0;
-    int idFirst = 0;
-    int menorTempo = 0;
+void SRT(struct Processos processo[], int *n){
+    int tempoAtual = 0;
+    int idFirst = -1;
+    int menorTempo = INT_MAX;
+    int processoFim = 0;
     
-    for( i = 0; i < *n; i++){
-        if(processo[i].tempoEntrada <= i && processo[i].tempoProcesso > 0){
-            menorTempo = processo[i].tempoProcesso;
-            if(processo[i].tempoProcesso < menorTempo){
-                menorTempo = processo[i].tempoProcesso;
-                idFirst = processo[i].id;
+    for(int i =0; i<*n; i++){
+        processo[i].tempoRestante = processo[i].tempoProcesso;
+    }
+    
+    while(processoFim < *n){
+        menorTempo = INT_MAX;
+        for(int i = 0; i < *n; i++){
+            if(processo[i].tempoEntrada <= tempoAtual && processo[i].tempoRestante > 0){
+                if(processo[i].tempoRestante < menorTempo){
+                    menorTempo = processo[i].tempoRestante;
+                    idFirst = i;
+                }
             }
         }
-    }
-    printf("%d", idFirst);
-    int armazenar[MAX];
-    
-    for(i; i < *n; i++){
-        if(idFirst == processo[i].id){
-            armazenar[i] = processo[i].id;
-        }else if(processo[i].tempoEntrada <= i && processo[i].tempoProcesso < menorTempo){
-            armazenar[i] = processo[i].id;
-            menorTempo = processo[i].tempoProcesso;
+        
+        if(idFirst != -1){
+            processo[idFirst].tempoRestante--;
+            printf("Tempo %d: Executando processo %s\n", tempoAtual, processo[idFirst].nome);
+            if(processo[idFirst].tempoRestante == 0){
+                processoFim++;
+                printf("Tempo %d: Processo %s finalizado\n", tempoAtual + 1, processo[idFirst].nome);
+            }
         }
+        tempoAtual++;
     }
     
 }
@@ -54,7 +61,8 @@ void entradas(struct Processos processo[], int *n) {
 		printf("Tempo do processo: ");
 		scanf("%d", &processo[i].tempoProcesso);
 		while (getchar() != '\n');
-		processo->id = i + 1;
+		processo[i].id = i;
+		processo[i].tempoRestante = 0;
 	}
 	SRT(processo, n);
 }
