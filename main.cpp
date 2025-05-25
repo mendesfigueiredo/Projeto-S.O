@@ -10,6 +10,7 @@ struct Processos {
 
 
 void SRT(struct Processos processo[], int *n){
+    printf("\n\n");
     int tempoAtual = 0;
     int idFirst = -1;
     int menorTempo = INT_MAX;
@@ -43,6 +44,43 @@ void SRT(struct Processos processo[], int *n){
     
 }
 
+void roundRobin(struct Processos processo[], int *n){
+    printf("\n\n");
+    int tempoAtual = 0;
+    int quantum;
+    int processoFim = 0;
+    
+    printf("Qual o valor do quantum: ");
+    scanf("%d", &quantum);
+    
+    for(int i =0; i<*n; i++){
+        processo[i].tempoRestante = processo[i].tempoProcesso;
+    }
+    
+    while(processoFim < *n){    
+        for(int i=0; i<*n; i++){
+            if(processo[i].tempoEntrada <= tempoAtual && processo[i].tempoRestante > 0){
+                int executado;
+                if(processo[i].tempoRestante < quantum){
+                    executado = processo[i].tempoRestante;
+                }else{
+                    executado = quantum;
+                }
+                
+                printf("Tempo %d: Executando processo %s por %d unidades\n",tempoAtual, processo[i].nome, executado);
+                processo[i].tempoRestante = processo[i].tempoRestante - executado;
+                tempoAtual = tempoAtual + executado;
+                
+                if(processo[i].tempoRestante == 0){
+                    processoFim++;
+                    printf("Tempo %d: Processo %s finalizado\n", tempoAtual, processo[i].nome);
+                }
+            }
+        }
+    }
+    
+}
+
 void entradas(struct Processos processo[], int *n) {
 	do {
 		printf("Quantas entradas serão? (entre 2 a 15): ");
@@ -65,6 +103,7 @@ void entradas(struct Processos processo[], int *n) {
 		processo[i].tempoRestante = 0;
 	}
 	SRT(processo, n);
+	roundRobin(processo, n);
 }
 
 
