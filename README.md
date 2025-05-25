@@ -8,10 +8,12 @@
 Nesse projeto foi proposto que fizemos uma implementação em código de dois algoritimos, sendo eles: 
 - SRT(Shortest remaning time next)
 - Round-Robin
+
 Foi colocado que teria que ter de 2 a 15 processos onde teriam que receber 3 entradas, sendo elas:
 - Nome
 - Tempo que Chegou
 - Tempo de processamento
+
 Depois dessas etapas, foi passado que precisariamos fazer o algoritimo e ter uma saída com a timeline de como é processado, com os tempos e os processos executados.
 
 ***Desenvolvimento***
